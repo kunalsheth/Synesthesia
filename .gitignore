@@ -1,4 +1,7 @@
 .idea
 lib
 out
+project
+*META-INF
+target
 *.iml
