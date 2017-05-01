@@ -9,7 +9,6 @@ import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -57,22 +56,36 @@ public class Synesthesia {
             final String word = scanner.nextLine();
             if (!word2Vec.hasWord(word)) continue;
 
-            final double[] vector = normalize(word2Vec.getWordVector(word));
-            for (int i = 0; i < vector.length; i++) vector[i] = Math.abs(vector[i]);
-            System.out.println("\"" + word + "\" is #" + Integer.toHexString(
-                    new Color((float) vector[0], (float) vector[1], (float) vector[2]).getRGB()
-            ));
+            final Color color = vecToColor(word2Vec.getWordVector(word));
+
+            System.out.println("\"" + word + "\" is #" + Integer.toHexString(color.getRGB()));
         }
     }
 
-    protected static double[] normalize(final double[] vector) {
-        final double magnitude = Math.sqrt(
-                Arrays.stream(vector)
-                        .map(x -> x * x)
-                        .sum()
-        );
-        return Arrays.stream(vector)
-                .map(x -> x / magnitude)
-                .toArray();
+    protected static Color vecToColor(final double[] vector) {
+//        final double magnitude = Math.sqrt(
+//                Arrays.stream(vector)
+//                        .map(x -> x * x)
+//                        .sum()
+//        );
+
+//        final int[] rgb = Arrays.stream(vector)
+//                .map(x -> x / magnitude)
+//                .peek(x -> System.out.print(x + " "))
+//                .map(x -> (x + 1) / 2)
+//                .mapToInt(x -> (int) (x * 255))
+//                .toArray();
+
+//        final double[] hsv = Arrays.stream(vector)
+//                .map(x -> x / magnitude)
+//                .peek(x -> System.out.print(x + " "))
+//                .map(x -> (x + 1) / 2)
+//                .toArray();
+
+        final float theta01 = (float) ((Math.atan2(vector[0], vector[1]) + Math.PI) / (2 * Math.PI));
+        final float theta02 = (float) ((Math.atan2(vector[0], vector[2]) + Math.PI) / (2 * Math.PI));
+        final float theta12 = (float) ((Math.atan2(vector[1], vector[2]) + Math.PI) / (2 * Math.PI));
+
+        return new Color(theta01, theta02, theta12);
     }
 }
