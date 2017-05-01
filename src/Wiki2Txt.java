@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.zip.GZIPOutputStream;
 
+/**
+ * Created by the-magical-llamicorn on 4/30/17.
+ */
 public class Wiki2Txt {
 
     public static void main(final String[] args) throws WikiInitializationException, IOException {

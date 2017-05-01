@@ -6,10 +6,15 @@ import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreproc
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
+/**
+ * Created by the-magical-llamicorn on 4/30/17.
+ */
 public class Synesthesia {
 
     public static final String saveFile = "word2vec.dl4j";
@@ -46,7 +51,18 @@ public class Synesthesia {
             System.exit(1);
         }
 
-        // TODO: 4/30/17 Make Colors
+        final Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("word: ");
+            final String word = scanner.nextLine();
+            if (!word2Vec.hasWord(word)) continue;
+
+            final double[] vector = normalize(word2Vec.getWordVector(word));
+            for (int i = 0; i < vector.length; i++) vector[i] = Math.abs(vector[i]);
+            System.out.println("\"" + word + "\" is #" + Integer.toHexString(
+                    new Color((float) vector[0], (float) vector[1], (float) vector[2]).getRGB()
+            ));
+        }
     }
 
     protected static double[] normalize(final double[] vector) {
