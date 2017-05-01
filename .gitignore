@@ -1,7 +1,8 @@
 .idea
 lib
 out
-project
 *META-INF
-target
+corpus*
+*.dl4j
+*.txt
 *.iml
